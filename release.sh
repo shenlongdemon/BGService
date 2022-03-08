@@ -27,7 +27,7 @@ then
 
   printf "Releasing for %s.\n" "${RELEASE_MODE[releaseMode-1]##*:}"
 
-#  sh ./clear.sh
+  sh ./clear.sh
 
   clear && clear
 
