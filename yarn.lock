@@ -2764,6 +2764,7 @@ __metadata:
     metro-react-native-babel-preset: ^0.66.2
     react: 17.0.2
     react-native: 0.67.3
+    react-native-background-actions: ^2.6.5
     react-test-renderer: 17.0.2
     typescript: ^4.4.4
   languageName: unknown
@@ -4075,6 +4076,13 @@ __metadata:
   version: 5.0.1
   resolution: "event-target-shim@npm:5.0.1"
   checksum: 1ffe3bb22a6d51bdeb6bf6f7cf97d2ff4a74b017ad12284cc9e6a279e727dc30a5de6bb613e5596ff4dc3e517841339ad09a7eec44266eccb1aa201a30448166
+  languageName: node
+  linkType: hard
+
+"eventemitter3@npm:^4.0.7":
+  version: 4.0.7
+  resolution: "eventemitter3@npm:4.0.7"
+  checksum: 1875311c42fcfe9c707b2712c32664a245629b42bb0a5a84439762dd0fd637fc54d078155ea83c2af9e0323c9ac13687e03cfba79b03af9f40c89b4960099374
   languageName: node
   linkType: hard
 
@@ -7691,6 +7699,17 @@ __metadata:
   version: 16.13.1
   resolution: "react-is@npm:16.13.1"
   checksum: f7a19ac3496de32ca9ae12aa030f00f14a3d45374f1ceca0af707c831b2a6098ef0d6bdae51bd437b0a306d7f01d4677fcc8de7c0d331eb47ad0f46130e53c5f
+  languageName: node
+  linkType: hard
+
+"react-native-background-actions@npm:^2.6.5":
+  version: 2.6.5
+  resolution: "react-native-background-actions@npm:2.6.5"
+  dependencies:
+    eventemitter3: ^4.0.7
+  peerDependencies:
+    react-native: ">=0.47.0"
+  checksum: 9382e353440d8e3254e1c967f21bbf14a4c5527bcc30ca6623b5bdebbac8d02cd30898e90f5192db0c34dc7c2d23bf5ed99bbe2286a76ee82187da36b649e62b
   languageName: node
   linkType: hard
 

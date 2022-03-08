@@ -8,13 +8,14 @@
  * @format
  */
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
+  ToastAndroid,
   useColorScheme,
   View,
 } from 'react-native';
@@ -26,6 +27,7 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import BackgroundService from 'react-native-background-actions';
 
 const Section: React.FC<{
   title: string;
@@ -39,7 +41,8 @@ const Section: React.FC<{
           {
             color: isDarkMode ? Colors.white : Colors.black,
           },
-        ]}>
+        ]}
+      >
         {title}
       </Text>
       <Text
@@ -48,7 +51,8 @@ const Section: React.FC<{
           {
             color: isDarkMode ? Colors.light : Colors.dark,
           },
-        ]}>
+        ]}
+      >
         {children}
       </Text>
     </View>
@@ -62,17 +66,57 @@ const App = () => {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
+  // You can do anything in your task such as network requests, timers and so on,
+  // as long as it doesn't touch UI. Once your task completes (i.e. the promise is resolved),
+  // React Native will go into "paused" mode (unless there are other tasks running,
+  // or there is a foreground app).
+  const veryIntensiveTask = async (_taskDataArguments: any) => {
+    // Example of an infinite loop task
+    await new Promise(async _resolve => {
+      setInterval(() => {
+        ToastAndroid.show('hi', 1000);
+      }, 3000);
+    });
+  };
+
+  useEffect(() => {
+    (async function (): Promise<void> {
+      const options = {
+        taskName: 'Example',
+        taskTitle: 'ExampleTask title',
+        taskDesc: 'ExampleTask description',
+        taskIcon: {
+          name: 'ic_launcher',
+          type: 'mipmap',
+        },
+        color: '#ff00ff',
+        linkingURI: 'yourSchemeHere://chat/jane', // See Deep Linking for more info
+        parameters: {
+          delay: 1000,
+        },
+      };
+      await BackgroundService.start(veryIntensiveTask, options);
+      await BackgroundService.updateNotification({
+        taskDesc: 'New ExampleTask description',
+      }); // Only Android, iOS will ignore this call
+      // iOS will also run everything here in the background until .stop() is called
+      // await BackgroundService.stop();
+    })();
+  });
+
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
+        style={backgroundStyle}
+      >
         <Header />
         <View
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
+          }}
+        >
           <Section title="Step One">
             Edit <Text style={styles.highlight}>App.tsx</Text> to change this
             screen and then come back to see your edits.
