@@ -24,19 +24,25 @@ then
   done
   read releaseMode
 
-  clear && clear
 
   printf "Releasing for %s.\n" "${RELEASE_MODE[releaseMode-1]##*:}"
 
+#  sh ./clear.sh
+
+  clear && clear
+
+
   if [[ releaseMode -eq 1 ]]
   then
+    printf "Starting bundle"
     rm -f ./android/app/src/main/assets/index.android.bundle
     # attach-android-bundle
-    react-native bundle --platform android --dev false --entry-file index.js --bundle-output ./android/app/src/main/assets/index.android.bundle --assets-dest ./android/app/src/main/res/
+    npx mkdirp android/app/src/main/assets/ && react-native bundle --platform android --dev false --entry-file index.js --bundle-output ./android/app/src/main/assets/index.android.bundle --assets-dest ./android/app/src/main/res/
     # release
-    yarn clean:android && cd android && ./gradlew assembleDebug && cd ..
+    cd android && ./gradlew assembleDebug && cd ..
   else
-    yarn clean:android && cd android && ./gradlew assembleRelease && cd ..
+    printf "release AAB file"
+    cd android && ./gradlew assembleRelease && cd ..
   fi
 else
   echo "===== iOS ====="
