@@ -1,13 +1,13 @@
 import BackgroundService from 'react-native-background-actions';
-
 const useBackgroundService = () => {
   const start = async <BackgroundServiceParam>(
+    name: string,
     scheme: string,
     param: BackgroundServiceParam,
     callback: (taskData: BackgroundServiceParam | undefined) => Promise<void>,
   ): Promise<void> => {
     const options = {
-      taskName: 'Example',
+      taskName: name,
       taskTitle: 'ExampleTask title',
       taskDesc: 'ExampleTask description',
       taskIcon: {

@@ -28,6 +28,7 @@ const App = () => {
     stop: stopBGService,
     isRunning: isBGServiceRunning,
     updateNotification,
+    getRegisteredEventNames,
   } = useBackgroundService();
   const sleep = (time: number) =>
     new Promise<void>(resolve => setTimeout(() => resolve(), time));
@@ -39,16 +40,11 @@ const App = () => {
   const veryIntensiveTask = async (taskDataArguments: any) => {
     // Example of an infinite loop task
     const {delay} = taskDataArguments;
-    await new Promise(async _resolve => {
+    await new Promise<void>(async _resolve => {
       let i: number = 0;
       while (true) {
-        const isRunning: boolean = await isBGServiceRunning();
-        if (!isRunning) {
-          break;
-        }
         const msg: string = 'BackgroundService ' + i;
         // console.log(msg);
-        ToastAndroid.show(msg, 1000);
         await updateNotification({description: msg});
         await sleep(delay);
         i += 1;
@@ -58,8 +54,17 @@ const App = () => {
 
   useEffect(() => {
     (async function (): Promise<void> {
+      const isRun: boolean = await isBGServiceRunning();
+      if (isRun) {
+        return;
+      }
       const param: BackgroundServiceParam = {delay: 1000};
-      await startBGService('bgservice://chat/jane', param, veryIntensiveTask);
+      await startBGService(
+        'updateNotification',
+        'bgservice://chat/jane',
+        param,
+        veryIntensiveTask,
+      );
     })();
     Linking.addEventListener('url', handleOpenURL);
 
